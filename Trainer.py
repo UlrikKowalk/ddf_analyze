@@ -3,10 +3,9 @@ import torch
 import torch.nn as nn
 
 
-def train_model(model, train_loader, filename, num_epochs=10, lr=1e-3, device='cpu'):
-    model.to(device)
+def train_model(model, optimizer, train_loader, filename, num_epochs=10, lr=1e-3, device='cpu'):
+
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(num_epochs):
         model.train()
@@ -21,8 +20,8 @@ def train_model(model, train_loader, filename, num_epochs=10, lr=1e-3, device='c
             loss.backward()
             optimizer.step()
 
-            torch.save(model.state_dict(), filename)
-            torch.save(optimizer.state_dict(), f'{filename}.opt')
+            torch.save(model.state_dict(), f'Trained/{filename}.pth')
+            torch.save(optimizer.state_dict(), f'Trained/{filename}.opt')
 
             running_loss += loss.item()
 
