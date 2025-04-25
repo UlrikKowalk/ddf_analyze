@@ -30,7 +30,7 @@ class_names = "classes.txt"
 filename_model = "ddf_diarizer"
 
 device = "cuda"
-learning_rate = 0.0001
+learning_rate = 0.001
 num_epochs = 10
 
 dataset = DiarizationChunkDataset(

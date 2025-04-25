@@ -1,6 +1,7 @@
 
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
 
 
 def train_model(model, optimizer, train_loader, filename, num_epochs=10, lr=1e-3, device='cpu'):
@@ -13,6 +14,9 @@ def train_model(model, optimizer, train_loader, filename, num_epochs=10, lr=1e-3
 
         for inputs, labels in train_loader:
             inputs, labels = inputs.to(device), labels.to(device)
+
+            # plt.plot(labels[0].cpu().detach().numpy())
+            # plt.show()
 
             optimizer.zero_grad()
             outputs = model(inputs)

@@ -29,6 +29,8 @@ class SpeakerDiarizationDNN(nn.Module):
         self.fc2 = nn.Linear(256, 128)
         self.fc3 = nn.Linear(128, self.num_classes)
 
+        self.softmax = nn.Softmax(dim=1)
+
     def extract_features(self, audio):
         """
         Expects raw audio waveform of shape [N]
@@ -67,4 +69,8 @@ class SpeakerDiarizationDNN(nn.Module):
         x = self.fc3(x)  # [B*T, num_speakers]
 
         x = x.view(B, T, self.num_classes)
-        return x[0] if single_input else x
+        x = x[0] if single_input else x
+
+        x = self.softmax(x)
+
+        return x
