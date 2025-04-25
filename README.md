@@ -1,2 +1,2 @@
 # ddf_analyze
-COdebase for a speaker diarization experiment
+Codebase for a speaker diarization experiment
