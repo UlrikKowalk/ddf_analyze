@@ -1,0 +1,14 @@
+0 silence
+1 music
+2 speaker_justus
+3 speaker_peter
+4 speaker_bob
+5 speaker_mathilda
+6 speaker_male
+7 speaker_female
+8 speaker_parrot
+9 atmo
+10 sfx
+11 speaker_passetti
+12 speaker_morton
+13 breathing
