@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 
 
-def train_model(model, train_loader, num_epochs=10, lr=1e-3, device='cpu'):
+def train_model(model, train_loader, filename, num_epochs=10, lr=1e-3, device='cpu'):
     model.to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
@@ -20,6 +20,9 @@ def train_model(model, train_loader, num_epochs=10, lr=1e-3, device='cpu'):
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
+
+            torch.save(model.state_dict(), filename)
+            torch.save(optimizer.state_dict(), f'{filename}.opt')
 
             running_loss += loss.item()
 

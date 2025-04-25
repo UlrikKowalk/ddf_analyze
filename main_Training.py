@@ -9,6 +9,8 @@ label_file = "010 - Die drei Fragezeichen und die fluesternde Mumie (A).txt"
 
 class_names = "classes.txt"
 
+filename_model = "ddf_diarizer"
+
 dataset = DiarizationChunkDataset(
     audio_path=audio_file,
     label_path=label_file,
@@ -21,4 +23,4 @@ dataset = DiarizationChunkDataset(
 train_loader = DataLoader(dataset, batch_size=64, shuffle=True)
 model = SpeakerDiarizationDNN(num_classes=dataset.get_num_classes())
 
-train_model(model, train_loader, num_epochs=15, device='cpu')
+train_model(model=model, train_loader=train_loader, filename=filename_model, num_epochs=15, device='cpu')
