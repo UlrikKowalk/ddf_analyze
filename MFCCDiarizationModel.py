@@ -27,6 +27,10 @@ class MFCCDiarizationModel(nn.Module):
             nn.BatchNorm1d(hidden_dim),
             nn.ReLU(),
             nn.Dropout(0.3),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.BatchNorm1d(hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.3),
             nn.Linear(hidden_dim, num_speakers)
         )
 
