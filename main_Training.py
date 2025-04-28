@@ -6,6 +6,7 @@ from SpeakerDiarizationDNN import SpeakerDiarizationDNN
 from Trainer import train
 from MFCCDiarizationModel_old import MFCCDiarizationModel
 from DiarizationChunkDataset import DiarizationChunkDataset
+from compute_class_frequencies import compute_class_frequencies
 
 
 def optimizer_to(optim, device):
@@ -58,7 +59,10 @@ if os.path.isfile(f'{filename_model}.opt'):
     optimizer.load_state_dict(op)
 optimizer_to(optimizer, device)
 
-criterion = torch.nn.BCEWithLogitsLoss()
+
+speaker_class_frequencies = compute_class_frequencies(dataset=dataset)
+pos_weight = torch.tensor([1.0 / class_freq for class_freq in speaker_class_frequencies])
+criterion = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
 train(model=model,
       dataset=dataset,

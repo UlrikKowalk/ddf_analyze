@@ -65,12 +65,12 @@ def test_diarization(
     class_path,
     time_resolution=0.5,
     threshold=0.5,
-    n_mfcc=20,
+    n_mfcc=40,
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
     print("Preparing dataset...")
     dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path,
-                                 inference=False, frame_size=time_resolution)
+                                 inference=False, frame_size=time_resolution, sample_rate=32000)
     speakers = dataset.get_classes()
     sample_rate = dataset.sample_rate
     print(f"Loaded audio with {len(dataset)} chunks and {dataset.get_num_classes()} speakers.")
