@@ -65,11 +65,11 @@ def test_diarization(
     inference=True,
     time_resolution=0.5,
     threshold=0.5,
-    n_mfcc=20,
+    n_mfcc=40,
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
     print("Preparing dataset...")
-    dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path, frame_size=time_resolution, sample_rate=32000, inference=True)
+    dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path, frame_size=time_resolution, sample_rate=16000, inference=True)
     speakers = dataset.get_classes()
     sample_rate = dataset.sample_rate
     print(f"Loaded audio with {len(dataset)} chunks and {dataset.get_num_classes()} speakers.")
@@ -89,8 +89,8 @@ def test_diarization(
 if __name__ == "__main__":
     test_diarization(
         model_path="Trained/ddf_diarizer_new.pth",
-        audio_path="006 - Die drei Fragezeichen und der sprechende Totenkopf (A).mp3",
-        label_path="006 - Die drei Fragezeichen und der sprechende Totenkopf (A).txt",
+        audio_path="010 - Die drei Fragezeichen und die fluesternde Mumie (B).mp3",
+        label_path="010 - Die drei Fragezeichen und die fluesternde Mumie (B).txt",
         class_path="classes.txt",
         time_resolution=0.5,
         threshold=0.5,
