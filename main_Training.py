@@ -59,10 +59,10 @@ if os.path.isfile(f'{filename_model}.opt'):
     optimizer.load_state_dict(op)
 optimizer_to(optimizer, device)
 
-
-speaker_class_frequencies = compute_class_frequencies(dataset=dataset)
-pos_weight = torch.tensor([1.0 / class_freq for class_freq in speaker_class_frequencies])
-criterion = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+# speaker_class_frequencies = compute_class_frequencies(dataset=dataset)
+# speaker_class_frequencies[0] = 1000
+# pos_weight = torch.tensor([100.0 / class_freq for class_freq in speaker_class_frequencies])
+criterion = torch.nn.BCEWithLogitsLoss()
 
 train(model=model,
       dataset=dataset,

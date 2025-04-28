@@ -70,7 +70,7 @@ def test_diarization(
 ):
     print("Preparing dataset...")
     dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path,
-                                 inference=False, frame_size=time_resolution, sample_rate=32000)
+                                 inference=False, frame_size=time_resolution, sample_rate=16000)
     speakers = dataset.get_classes()
     sample_rate = dataset.sample_rate
     print(f"Loaded audio with {len(dataset)} chunks and {dataset.get_num_classes()} speakers.")

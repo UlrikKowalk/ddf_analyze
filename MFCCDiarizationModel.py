@@ -34,6 +34,8 @@ class MFCCDiarizationModel(nn.Module):
             nn.Linear(hidden_dim, num_speakers)
         )
 
+        self.softmax = nn.Softmax(dim=1)
+
     def forward(self, x):  # [B, 1, chunk_size]
         mfcc = self.mfcc(x)           # [B, n_mfcc, T]
         mfcc = mfcc[:, 1:, :]
@@ -41,4 +43,6 @@ class MFCCDiarizationModel(nn.Module):
         rnn_out, _ = self.rnn(mfcc)   # [B, T, 2*hidden_dim]
         x = rnn_out.mean(dim=1)       # [B, 2*hidden_dim]
 
-        return self.encoder(x)        # [B, num_speakers]
+        x = self.encoder(x)        # [B, num_speakers]
+        x = self.softmax(x)
+        return x
