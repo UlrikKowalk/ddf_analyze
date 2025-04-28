@@ -4,7 +4,7 @@ from numba.cuda.models import Dim3Model
 from torch.utils.data import DataLoader
 from SpeakerDiarizationDNN import SpeakerDiarizationDNN
 from Trainer import train
-from MFCCDiarizationModel import MFCCDiarizationModel
+from MFCCDiarizationModel_old import MFCCDiarizationModel
 from DiarizationChunkDataset import DiarizationChunkDataset
 
 
@@ -46,7 +46,7 @@ dataset = DiarizationChunkDataset(
 if not os.path.exists('Trained'):
     os.mkdir('Trained')
 
-model = MFCCDiarizationModel(sample_rate=16000, num_speakers=dataset.get_num_classes(), hidden_dim=128)
+model = MFCCDiarizationModel(sample_rate=16000, n_mfcc=40, num_speakers=dataset.get_num_classes(), hidden_dim=256)
 if os.path.isfile(f'{filename_model}.pth'):
     sd = torch.load(f'{filename_model}.pth', weights_only=False)
     model.load_state_dict(sd)

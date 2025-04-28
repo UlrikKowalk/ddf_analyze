@@ -3,7 +3,7 @@ import torchaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from DiarizationChunkDataset import DiarizationChunkDataset
-from MFCCDiarizationModel import MFCCDiarizationModel
+from MFCCDiarizationModel_old import MFCCDiarizationModel
 
 
 def sigmoid(x):
@@ -39,11 +39,13 @@ def plot_diarization(preds, labels, speakers, time_resolution):
     time_axis = np.arange(preds.shape[0]) * time_resolution
 
     fig, axes = plt.subplots(num_speakers, 1, figsize=(12, 1.5 * num_speakers), sharex=True)
-
+    speakers = speakers["label"]
     for i, speaker in enumerate(speakers):
+
         ax = axes[i] if num_speakers > 1 else axes
-        ax.step(time_axis, labels[:, i], where='post', label='Ground Truth', linewidth=2, alpha=0.7)
-        ax.step(time_axis, preds[:, 0, i], where='post', label='Prediction', linestyle='--', alpha=0.7)
+
+        ax.step(time_axis, preds[:, 0, i], where='post', label='Prediction', linestyle='-', alpha=0.7)
+        ax.step(time_axis, 0.5*labels[:, i], where='post', label='Ground Truth', linewidth=2, alpha=0.7)
         ax.set_ylabel(speaker)
         ax.set_ylim(-0.1, 1.1)
         ax.legend(loc='upper right')
@@ -63,7 +65,7 @@ def test_diarization(
     class_path,
     time_resolution=0.05,
     threshold=0.5,
-    n_mfcc=40,
+    n_mfcc=20,
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
     print("Preparing dataset...")
@@ -90,5 +92,5 @@ if __name__ == "__main__":
         class_path="classes.txt",
         time_resolution=0.05,
         threshold=0.5,
-        n_mfcc=40
+        n_mfcc=20
     )
