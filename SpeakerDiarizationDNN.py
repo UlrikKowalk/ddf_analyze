@@ -16,7 +16,7 @@ class SpeakerDiarizationDNN(nn.Module):
         self.mfcc_extractor = torchaudio.transforms.MFCC(
             sample_rate=self.sample_rate,
             n_mfcc=self.n_mfcc,
-            melkwargs={"n_fft": 400, "hop_length": 160, "n_mels": 64}
+            melkwargs={"n_fft": 400, "hop_length": 400, "n_mels": 64}
         )
 
         # Compute input dimension dynamically after MFCC
@@ -38,6 +38,7 @@ class SpeakerDiarizationDNN(nn.Module):
         """
         if audio.dim() == 1:
             audio = audio.unsqueeze(0)  # add batch dimension
+        print(audio.shape)
         mfcc = self.mfcc_extractor(audio)  # [1, n_mfcc, T]
         mfcc = mfcc.squeeze(0).transpose(0, 1)  # [T, n_mfcc]
         return mfcc
