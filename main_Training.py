@@ -47,14 +47,14 @@ if not os.path.exists('Trained'):
     os.mkdir('Trained')
 
 model = MFCCDiarizationModel(sample_rate=16000, num_speakers=dataset.get_num_classes(), hidden_dim=128)
-if os.path.isfile(f'Trained/{filename_model}.pth'):
-    sd = torch.load(f'Trained/{filename_model}.pth', weights_only=False)
+if os.path.isfile(f'{filename_model}.pth'):
+    sd = torch.load(f'{filename_model}.pth', weights_only=False)
     model.load_state_dict(sd)
 model.to(device)
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-if os.path.isfile(f'Trained/{filename_model}.opt'):
-    op = torch.load(f'Trained/{filename_model}.opt', weights_only=False)
+if os.path.isfile(f'{filename_model}.opt'):
+    op = torch.load(f'{filename_model}.opt', weights_only=False)
     optimizer.load_state_dict(op)
 optimizer_to(optimizer, device)
 
