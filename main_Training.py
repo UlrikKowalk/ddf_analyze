@@ -39,8 +39,8 @@ dataset = DiarizationChunkDataset(
     label_path=label_file,
     class_path=class_name_file,
     sample_rate=16000,
-    frame_size=0.05,
-    hop_size=0.05
+    frame_size=0.5,
+    hop_size=0.5
 )
 
 if not os.path.exists('Trained'):

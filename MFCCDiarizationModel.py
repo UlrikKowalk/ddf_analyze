@@ -3,7 +3,7 @@ import torch.nn as nn
 import torchaudio
 
 class MFCCDiarizationModel(nn.Module):
-    def __init__(self, sample_rate, n_mfcc=40, num_speakers=14, hidden_dim=128):
+    def __init__(self, sample_rate, n_mfcc=40, num_speakers=14, hidden_dim=64):
         super().__init__()
         self.mfcc = torchaudio.transforms.MFCC(
             sample_rate=sample_rate,

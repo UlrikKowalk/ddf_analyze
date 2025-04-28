@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from DiarizationChunkDataset import DiarizationChunkDataset
 from MFCCDiarizationModel_old import MFCCDiarizationModel
+from write_audacity_labels import write_audacity_labels
 
 
 def sigmoid(x):
@@ -14,7 +15,7 @@ def load_model(model_path, sample_rate, n_mfcc, num_speakers, device):
     model = MFCCDiarizationModel(sample_rate=sample_rate,
                                  n_mfcc=n_mfcc,
                                  num_speakers=num_speakers,
-                                 hidden_dim=64,
+                                 hidden_dim=64
                                  ).to(device)
     model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.eval()
@@ -34,7 +35,7 @@ def run_inference(model, dataset, threshold=0.5, device="cpu"):
     return binary_preds, preds
 
 
-def plot_diarization(preds, labels, speakers, time_resolution):
+def plot_diarization(preds, speakers, time_resolution):
     num_speakers = len(speakers)
     time_axis = np.arange(preds.shape[0]) * time_resolution
 
@@ -45,7 +46,6 @@ def plot_diarization(preds, labels, speakers, time_resolution):
         ax = axes[i] if num_speakers > 1 else axes
 
         ax.step(time_axis, preds[:, 0, i], where='post', label='Prediction', linestyle='-', alpha=0.7)
-        ax.step(time_axis, 0.5*labels[:, i], where='post', label='Ground Truth', linewidth=2, alpha=0.7)
         ax.set_ylabel(speaker)
         ax.set_ylim(-0.1, 1.1)
         ax.legend(loc='upper right')
@@ -55,7 +55,6 @@ def plot_diarization(preds, labels, speakers, time_resolution):
     plt.tight_layout()
     plt.savefig(f'quick.jpg', dpi=300)
     plt.close()
-    # plt.show()
 
 
 def test_diarization(
@@ -63,14 +62,14 @@ def test_diarization(
     audio_path,
     label_path,
     class_path,
+    inference=True,
     time_resolution=0.5,
     threshold=0.5,
     n_mfcc=20,
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
     print("Preparing dataset...")
-    dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path,
-                                 inference=False, frame_size=time_resolution)
+    dataset = DiarizationChunkDataset(audio_path=audio_path, label_path=label_path, class_path=class_path, frame_size=time_resolution)
     speakers = dataset.get_classes()
     sample_rate = dataset.sample_rate
     print(f"Loaded audio with {len(dataset)} chunks and {dataset.get_num_classes()} speakers.")
@@ -82,14 +81,16 @@ def test_diarization(
     pred_binary, _ = run_inference(model, dataset, threshold, device)
 
     print("Plotting results...")
-    plot_diarization(pred_binary, dataset.label_tensor.numpy(), speakers, time_resolution)
+    plot_diarization(pred_binary, speakers, time_resolution)
+
+    write_audacity_labels(preds=pred_binary, speaker_names=dataset.get_classes(), time_resolution=time_resolution, output_path=label_path, threshold=threshold)
 
 
 if __name__ == "__main__":
     test_diarization(
         model_path="Trained/ddf_diarizer_new.pth",
-        audio_path="010 - Die drei Fragezeichen und die fluesternde Mumie (A).mp3",
-        label_path="010 - Die drei Fragezeichen und die fluesternde Mumie (A).txt",
+        audio_path="010 - Die drei Fragezeichen und die fluesternde Mumie (B).mp3",
+        label_path="010 - Die drei Fragezeichen und die fluesternde Mumie (B).txt",
         class_path="classes.txt",
         time_resolution=0.5,
         threshold=0.5,
