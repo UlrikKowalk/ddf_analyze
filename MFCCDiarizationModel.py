@@ -36,6 +36,7 @@ class MFCCDiarizationModel(nn.Module):
 
     def forward(self, x):  # [B, 1, chunk_size]
         mfcc = self.mfcc(x)           # [B, n_mfcc, T]
+        mfcc = mfcc[:, 1:, :]
         mfcc = mfcc.transpose(1, 2)   # [B, T, n_mfcc]
         rnn_out, _ = self.rnn(mfcc)   # [B, T, 2*hidden_dim]
         x = rnn_out.mean(dim=1)       # [B, 2*hidden_dim]

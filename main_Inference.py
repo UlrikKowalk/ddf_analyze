@@ -93,6 +93,6 @@ if __name__ == "__main__":
         label_path="010 - Die drei Fragezeichen und die fluesternde Mumie (B).txt",
         class_path="classes.txt",
         time_resolution=0.5,
-        threshold=0.5,
+        threshold=0.7,
         n_mfcc=40
     )
